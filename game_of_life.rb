@@ -33,20 +33,21 @@ Shoes.app(title: "Game of Life", width: 1120, height: 640) do
   end
 
   def redraw_desk(content)
+    @active = false
     @desk_slot.clear if @desk_slot
     new_game(content)
     @desk_slot = draw_desk
   end
 
   def start_game
-    @status = true
+    @active = true
     animate(3) do
-      new_turn if @status
+      new_turn if @active
     end
   end
 
   def stop_game
-    @status = false
+    @active = false
   end
 
   flow(margin: 10) {
@@ -57,7 +58,7 @@ Shoes.app(title: "Game of Life", width: 1120, height: 640) do
     @fill = button "Fill"
     @start = button "Start"
     @stop = button "Stop"
-    @info = para ""
+    @info = para(margin: [0, 8, 0, 0]) {""}
     @fill.click { redraw_desk(@content) }
     @start.click { start_game }
     @stop.click { stop_game }
