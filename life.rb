@@ -1,22 +1,18 @@
 
 class Life
 
-  attr_accessor :x, :y, :population, :generation, :desk, :new_desk
+  attr_accessor :x, :y, :population, :generation, :desk, :new_desk, :content
 
-  def initialize(x, y)
+  def initialize(x, y, content)
     @x = x
     @y = y
     @desk = []
     @generation = 0
+    @content = content
   end
 
   def fill_desk
-    (0...y).each do |i|
-      @desk << []
-      (0...x).each do |j|
-        @desk[i] << rand(2)
-      end
-    end
+    @desk = Filler.new(self).fill
     set_population
     self
   end

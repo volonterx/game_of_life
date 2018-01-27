@@ -1,10 +1,11 @@
 require 'shoes'
+require_relative 'filler'
 require_relative 'life'
 
-Shoes.app(title: "Game of Life", width: 1000, height: 600) do
+Shoes.app(title: "Game of Life", width: 1120, height: 640) do
 
-  def new_game
-    @game = Life.new(100,50).fill_desk
+  def new_game(content)
+    @game = Life.new(112, 56, content).fill_desk
   end
 
   def draw_desk
@@ -31,15 +32,15 @@ Shoes.app(title: "Game of Life", width: 1000, height: 600) do
     @info.replace "Pop: #{@game.population} | Gen: #{@game.generation}"
   end
 
-  def redraw_desk
+  def redraw_desk(content)
     @desk_slot.clear if @desk_slot
-    new_game
+    new_game(content)
     @desk_slot = draw_desk
   end
 
   def start_game
     @status = true
-    animate(2) do
+    animate(3) do
       new_turn if @status
     end
   end
@@ -49,16 +50,20 @@ Shoes.app(title: "Game of Life", width: 1000, height: 600) do
   end
 
   flow(margin: 10) {
-    @redraw = button "Redraw"
+    list_box items: ["Empty", "Random", "Random symmetry", "Small random pattern", "Big random pattern"],
+      width: 200, choose: "Empty" do |list|
+      @content = list.text
+    end
+    @fill = button "Fill"
     @start = button "Start"
     @stop = button "Stop"
     @info = para ""
-    @redraw.click { redraw_desk }
+    @fill.click { redraw_desk(@content) }
     @start.click { start_game }
     @stop.click { stop_game }
   }
 
-  redraw_desk
+  redraw_desk("Empty")
 
 
 end
