@@ -1,24 +1,25 @@
 require 'shoes'
+require_relative 'cellule'
 require_relative 'filler'
 require_relative 'life'
 
-Shoes.app(title: "Game of Life", width: 1120, height: 640) do
+Shoes.app(title: "Game of Life", width: 1121, height: 640) do
 
   def new_game(content)
     @game = Life.new(112, 56, content).fill_desk
   end
 
   def draw_desk
-    stack {
+    stack(margin: [1,0,0,0]) {
       background white
-      fill black
-      stroke white
+      nostroke #white
       @game.desk.each_with_index do |line, line_index|
           line.each_with_index do |cell, cell_index|
-            if cell == 1
+            if cell.alive?
+              fill cell.color
               rect(left: cell_index * 10,
                    top: line_index * 10,
-                   width: 10)
+                   width: 9)
             end
           end
       end

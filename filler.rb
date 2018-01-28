@@ -70,11 +70,11 @@ class Filler
   end
 
   def random_cell
-    rand(3) == 0 ? 1 : 0
+    Сellule.new("random")
   end
 
   def fill_empty
-    @desk = Array.new( life.y, Array.new(life.x, 0) )
+    @desk = Array.new( life.y, Array.new(life.x, Сellule.new(0)) )
   end
 
 end

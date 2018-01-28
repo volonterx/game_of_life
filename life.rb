@@ -36,11 +36,25 @@ class Life
   end
 
   def generate_cell(i, j)
-    if @desk[i][j] == 0
-      cell_will_born?(i,j) ? 1 : 0
+    old_cell = @desk[i][j]
+    if old_cell.value == 0
+      if cell_will_born?(i,j)
+        cell_value = 1
+        cell_generation = 1
+      else
+        cell_value = 0
+        cell_generation = 0
+      end
     else
-      cell_will_die?(i,j) ? 0 : 1
+      if cell_will_die?(i,j)
+        cell_value = 0
+        cell_generation = 0
+      else
+        cell_value = 1
+        cell_generation = old_cell.generation + 1
+      end
     end
+    Сellule.new(cell_value, cell_generation)
   end
 
   def cell_will_born?(i,j)
@@ -57,19 +71,22 @@ class Life
     j_indexes = [j-1, j, j+1].delete_if{|index| index<0 || index>=x}
     i_indexes.each do |i_index|
       j_indexes.each do |j_index|
-        count += desk[i_index][j_index]
+        count += desk[i_index][j_index].value
       end
     end
-    count - desk[i][j]
+    count - desk[i][j].value
   end
 
   def set_population
-    @population = @desk.flatten.inject(&:+)
+    @population = @desk.flatten.inject(0){|sum, cell| sum += cell.value}
   end
 
   def print_desk
     desk.each do |line|
-      puts line.inspect
+      puts " "
+      line.each do |cell|
+        print [cell.value, cell.generation]
+      end
     end
     nil
   end
