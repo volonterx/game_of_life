@@ -1,4 +1,4 @@
-# Game of Life v. 0.2.1
+# Game of Life v. 0.3
 
 
 Created via Shoes 4. 
